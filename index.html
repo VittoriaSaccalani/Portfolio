@@ -32,9 +32,31 @@
 
     // Controlla se l'utente è su un dispositivo mobile
     if (isMobileDevice()) {
-        // Se è mobile allora reindirizza direttamente al file PDF.
-        // Questo chiederà all'utente di scaricarlo o aprirlo con un'app nativa.
-        window.location.href = pdfFile;
+        // Se è mobile, forza il download del PDF
+        // Creiamo un link temporaneo (tag <a>)
+        const link = document.createElement('a');
+        link.href = pdfFile;
+
+        // L'attributo 'download' suggerisce al browser di scaricare il file
+        // Puoi anche dargli un nome specifico, es: 'Portfolio.pdf'
+        link.download = 'PORTFOLIO_VITTORIA_SACCALANI.pdf'; 
+        
+        // Aggiungiamo il link al corpo del documento (necessario per alcuni browser)
+        document.body.appendChild(link);
+        
+        // Simuli-amo un click sul link per avviare il download
+        link.click();
+        
+        // Rimuoviamo il link subito dopo, dato che non serve più
+        document.body.removeChild(link);
+
+        // Aggiungiamo un messaggio per l'utente, nel caso il download non parta
+        document.body.style.backgroundColor = '#fff'; // Sfondo bianco per leggibilità
+        document.body.style.color = '#333';
+        document.body.style.textAlign = 'center';
+        document.body.style.padding = '20px';
+        document.body.innerHTML = '<h1>Download in corso...</h1><p>Se il download non si avvia automaticamente, <a href="' + pdfFile + '" download>clicca qui per scaricare il portfolio</a>.</p>';
+
     } else {
         // Se è un PC, crea e inserisci l'iframe per visualizzare il PDF.
         const iframe = document.createElement('iframe');
